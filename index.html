@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Duotone Profile Maker</title>
+  <style>
+    :root {
+      --primary: #C87CA2;   /* pink */
+      --secondary: #18774A; /* deep green */
+      --bg: #0f1211;
+      --text: #e9f0ed;
+      --muted: #a7b2ad;
+      --card: #131715;
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 900px at 10% -10%, #1b3e2d33, transparent 60%),
+                  radial-gradient(1200px 900px at 110% 20%, #5a2f4a33, transparent 60%),
+                  var(--bg);
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 28px 20px 72px; }
+
+    /* Hero */
+    .hero {
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, color-mix(in srgb, var(--secondary), #000 65%) 0%, color-mix(in srgb, var(--primary), #000 60%) 100%);
+      padding: clamp(28px, 8vw, 60px);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .hero::after{
+      content: ""; position: absolute; inset: -40% -20% auto auto; width: 80%; aspect-ratio: 1/1;
+      background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--primary), #fff 15%), transparent 60%);
+      opacity: .25; filter: blur(32px); z-index: -1;
+    }
+    h1 { margin: 0 0 10px; font-size: clamp(28px, 5.2vw, 48px); letter-spacing: .3px; }
+    .caption { display:block; font-size: clamp(14px, 2.4vw, 18px); line-height: 1.5; color: #f6f3f5; max-width: 70ch; }
+
+    /* Card/Form */
+    .card { background: var(--card); border: 1px solid #1e2723; border-radius: var(--radius); box-shadow: var(--shadow); }
+    .panel { padding: 22px; }
+    .split { display: grid; gap: 18px; grid-template-columns: 1fr; }
+    @media (min-width: 900px){ .split { grid-template-columns: 1.1fr .9fr; } }
+
+    .label { font-size: 14px; color: var(--muted); margin-bottom: 8px; display: inline-block; }
+
+    .dropzone {
+      border: 2px dashed color-mix(in srgb, var(--primary), #fff 10%);
+      background: #0f1211; border-radius: 16px; padding: 18px; text-align: center; transition: .2s border-color, .2s background;
+    }
+    .dropzone.dragover { border-color: var(--primary); background: #171b1a; }
+    .dropzone input { display:none; }
+    .dropzone .hint { color: var(--muted); font-size: 14px; }
+    .btns { display:flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+
+    button {
+      appearance: none; border: 0; cursor: pointer; padding: 12px 16px; border-radius: 12px; font-weight: 600;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--primary), #fff 10%), var(--primary));
+      color: #101314; box-shadow: 0 6px 18px rgba(200,124,162,.25);
+      transition: transform .06s ease, box-shadow .2s ease, opacity .2s ease;
+    }
+    button.secondary { background: linear-gradient(180deg, color-mix(in srgb, var(--secondary), #fff 12%), var(--secondary)); color:#f1fff8; box-shadow: 0 6px 18px rgba(24,119,74,.25); }
+    button.ghost { background: transparent; border:1px solid #2a332f; color: var(--text); }
+    button:disabled { opacity: .55; cursor:not-allowed; }
+    button:hover:not(:disabled){ transform: translateY(-1px); }
+
+    .preview-wrap, .result-wrap { background:#0b0e0d; border:1px solid #1b221f; border-radius:16px; padding: 14px; }
+    .preview, .result { width:100%; max-height: 520px; object-fit: contain; background:#111; border-radius:12px; display:block; }
+    canvas { width:100%; height:auto; border-radius:12px; display:block; }
+
+    .note { font-size: 12px; color: var(--muted); margin-top: 8px; }
+    footer { margin-top: 40px; text-align:center; color: var(--muted); font-size: 12px; }
+    .badge { display:inline-flex; gap:8px; align-items:center; font-size:12px; color:#dfe6e1; background:#15201a; border:1px solid #23342c; padding:8px 10px; border-radius:999px; }
+    .swatch { inline-size:14px; block-size:14px; border-radius:4px; border:1px solid #0006; box-shadow: inset 0 0 0 1px #0002; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1>Duotone Profile Maker</h1>
+      <span class="caption">Untuk menyatakan dukungan dan solidaritas kepada korban demonstrasi di Indonesia, situs ini membantu Anda membuat <em>foto profil</em> bergaya duotone—siap dipasang di media sosial.</span>
+      <div style="margin-top:16px" class="badge" aria-hidden="true">
+        <span class="swatch" style="background: var(--primary)"></span>
+        <span class="swatch" style="background: var(--secondary)"></span>
+        Warna tema • Primary: #C87CA2 • Secondary: #18774A
+      </div>
+    </section>
+    
+    <section class="hero" style="margin-top:24px">
+      <h1>Para Pejuang :</h1>
+        <div>
+            <span>Mereka para pejuang yang gugur, Raganya telah berpulang namun Nama dan Semangatnya tetap ada! </span>
+            <ol>
+                <li>
+                    <h3> Affan Kurniawan </h3>
+                </li>
+                <li>
+                    <h3> Saiful Akbar </h3>
+                </li>
+                <li>
+                    <h3> Muhammad Akbar Basri (Abay) </h3>
+                </li>
+                <li>
+                    <h3> Sarina Wati </h3>
+                </li>
+                <li>
+                    <h3> Rusdamiansyah </h3>
+                </li>
+                <li>
+                    <h3> Rheza Sendy Pratama </h3>
+                </li>
+                <li>
+                    <h3> Sumari </h3>
+                </li>
+                <li>
+                    <h3> Andika Lutfi Falah </h3>
+                </li>
+                <li>
+                    <h3> Iko Juliant Junior  </h3>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+    <section class="card" style="margin-top:24px">
+      <div class="panel split">
+        <!-- Left: Uploader & Preview -->
+        <div>
+          <label class="label" for="file">Unggah foto Anda (JPG / PNG / WEBP)</label>
+          <div class="dropzone" id="dropzone">
+            <input id="file" type="file" accept="image/*" />
+            <p class="hint">Tarik & jatuhkan gambar di sini, atau <button class="ghost" id="browseBtn" type="button">Pilih File</button></p>
+          </div>
+          <div class="preview-wrap" style="margin-top:14px">
+            <img id="preview" class="preview" alt="Preview gambar yang diunggah" />
+          </div>
+          <div class="btns">
+            <button id="duotoneBtn" class="secondary" disabled>Buat Duotone</button>
+            <button id="resetBtn" class="ghost" disabled>Reset</button>
+          </div>
+          <p class="note">Semua proses terjadi di peramban Anda. Tidak ada gambar yang dikirim ke server.</p>
+        </div>
+
+        <!-- Right: Result -->
+        <div>
+          <label class="label">Hasil</label>
+          <div class="result-wrap">
+            <canvas id="resultCanvas" aria-label="Hasil gambar duotone"></canvas>
+          </div>
+          <div class="btns">
+            <button id="downloadBtn" disabled>Unduh PNG</button>
+            <button id="swapBtn" class="ghost" disabled>Tukar Urutan Warna</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>© 2025 Duotone Profile Maker — Dibuat dengan ❤ untuk solidaritas.</footer>
+  </div>
+
+  <script>
+    // --- Utilities ---
+    const hexToRgb = (hex) => {
+      const m = /^#?([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i.exec(hex);
+      return m ? { r: parseInt(m[1], 16), g: parseInt(m[2], 16), b: parseInt(m[3], 16) } : null;
+    };
+    const lerp = (a, b, t) => Math.round(a + (b - a) * t);
+
+    // --- Theme Colors (mapping: shadows -> secondary, highlights -> primary) ---
+    let shadowHex = '#18774A';
+    let highlightHex = '#C87CA2';
+
+    const els = {
+      file: document.getElementById('file'),
+      browseBtn: document.getElementById('browseBtn'),
+      dropzone: document.getElementById('dropzone'),
+      preview: document.getElementById('preview'),
+      resultCanvas: document.getElementById('resultCanvas'),
+      duotoneBtn: document.getElementById('duotoneBtn'),
+      downloadBtn: document.getElementById('downloadBtn'),
+      resetBtn: document.getElementById('resetBtn'),
+      swapBtn: document.getElementById('swapBtn'),
+    };
+
+    let sourceImg = new Image();
+    sourceImg.onload = () => {
+      // Show preview and enable actions
+      els.preview.src = sourceImg.src;
+      els.duotoneBtn.disabled = false;
+      els.resetBtn.disabled = false;
+      els.swapBtn.disabled = false;
+      // Clear previous result
+      const ctx = els.resultCanvas.getContext('2d');
+      ctx.clearRect(0, 0, els.resultCanvas.width, els.resultCanvas.height);
+      els.downloadBtn.disabled = true;
+    };
+
+    // File input & DnD
+    els.browseBtn.addEventListener('click', () => els.file.click());
+    els.file.addEventListener('change', (e) => handleFile(e.target.files?.[0]));
+
+    ;['dragenter','dragover'].forEach(ev => els.dropzone.addEventListener(ev, (e)=>{e.preventDefault();e.stopPropagation(); els.dropzone.classList.add('dragover');}));
+    ;['dragleave','drop'].forEach(ev => els.dropzone.addEventListener(ev, (e)=>{e.preventDefault();e.stopPropagation(); els.dropzone.classList.remove('dragover');}));
+    els.dropzone.addEventListener('drop', (e)=>{
+      const file = e.dataTransfer.files?.[0];
+      handleFile(file);
+    });
+
+    function handleFile(file){
+      if(!file) return;
+      if(!file.type.startsWith('image/')){ alert('File harus berupa gambar.'); return; }
+      const reader = new FileReader();
+      reader.onload = () => { sourceImg = new Image(); sourceImg.onload = () => sourceImg.onload(); sourceImg.onload = sourceImg.onload; }; // keep eslint happy
+      reader.onload = () => { sourceImg = new Image(); sourceImg.onload = () => { els.preview.src = sourceImg.src; els.duotoneBtn.disabled=false; els.resetBtn.disabled=false; els.swapBtn.disabled=false; const ctx=els.resultCanvas.getContext('2d'); ctx.clearRect(0,0,els.resultCanvas.width,els.resultCanvas.height); els.downloadBtn.disabled=true; }; sourceImg.src = reader.result; };
+      reader.readAsDataURL(file);
+    }
+
+    // Core: Apply duotone mapping using luminance
+    function applyDuotone(img, shadowColor, highlightColor){
+      const maxSide = 2048; // limit size for performance
+      const ratio = Math.min(1, maxSide / Math.max(img.width, img.height));
+      const w = Math.round(img.width * ratio);
+      const h = Math.round(img.height * ratio);
+
+      const canvas = els.resultCanvas;
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+
+      const imageData = ctx.getImageData(0, 0, w, h);
+      const d = imageData.data;
+      const s = hexToRgb(shadowColor);
+      const hi = hexToRgb(highlightColor);
+
+      for (let i=0; i<d.length; i+=4){
+        const r = d[i], g = d[i+1], b = d[i+2];
+        // luminance (sRGB Rec.709)
+        const lum = (0.2126*r + 0.7152*g + 0.0722*b) / 255; // 0..1
+        d[i]   = lerp(s.r,  hi.r,  lum);
+        d[i+1] = lerp(s.g,  hi.g,  lum);
+        d[i+2] = lerp(s.b,  hi.b,  lum);
+        // preserve original alpha
+      }
+      ctx.putImageData(imageData, 0, 0);
+    }
+
+    els.duotoneBtn.addEventListener('click', ()=>{
+      if(!els.preview.src) return alert('Unggah gambar terlebih dahulu.');
+      applyDuotone(sourceImg, shadowHex, highlightHex);
+      els.downloadBtn.disabled = false;
+    });
+
+    els.swapBtn.addEventListener('click', ()=>{
+      // Swap mapping order
+      [shadowHex, highlightHex] = [highlightHex, shadowHex];
+      if(els.preview.src){
+        applyDuotone(sourceImg, shadowHex, highlightHex);
+        els.downloadBtn.disabled = false;
+      }
+    });
+
+    els.downloadBtn.addEventListener('click', ()=>{
+      const a = document.createElement('a');
+      a.download = 'duotone.png';
+      a.href = els.resultCanvas.toDataURL('image/png');
+      a.click();
+    });
+
+    els.resetBtn.addEventListener('click', ()=>{
+      els.file.value = '';
+      els.preview.removeAttribute('src');
+      const ctx = els.resultCanvas.getContext('2d');
+      ctx.clearRect(0,0,els.resultCanvas.width,els.resultCanvas.height);
+      els.duotoneBtn.disabled = true;
+      els.downloadBtn.disabled = true;
+      els.resetBtn.disabled = true;
+      els.swapBtn.disabled = true;
+      // restore default mapping
+      shadowHex = '#18774A';
+      highlightHex = '#C87CA2';
+    });
+  </script>
+</body>
+</html>
